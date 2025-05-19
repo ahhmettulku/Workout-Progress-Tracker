@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Workout {
+  id        Int        @id @default(autoincrement())
+  date      DateTime   @default(now())
+  exercises Exercise[]
+}
+
+model Exercise {
+  id        Int     @id @default(autoincrement())
+  name      String
+  reps      Int
+  sets      Int
+  weight    Float
+  workout   Workout @relation(fields: [workoutId], references: [id])
+  workoutId Int
+}
