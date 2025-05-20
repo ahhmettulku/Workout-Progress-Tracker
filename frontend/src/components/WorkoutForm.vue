@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, defineEmits } from "vue";
 import api from "../services/api";
+
+const emit = defineEmits(["workout-added"]);
 
 const date = ref("");
 const exercises = ref([{ name: "", sets: 0, reps: 0, weight: 0 }]);
@@ -31,9 +33,10 @@ const submitWorkout = async () => {
     await api.post("/workouts", payload);
     alert("Workout submitted successfully!");
 
-    // Reset the form after submission
+    // TO-DO  Reset the form after submission
     date.value = "";
     exercises.value = [{ name: "", reps: 0, sets: 0, weight: 0 }];
+    emit("workout-added"); // emit event here
   } catch (error) {
     console.error(error);
     alert("Failed to submit workout. Please try again.");

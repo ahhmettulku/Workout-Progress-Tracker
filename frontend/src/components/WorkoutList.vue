@@ -11,6 +11,8 @@ const fetchWorkouts = async () => {
 };
 
 onMounted(fetchWorkouts);
+
+defineExpose({ fetchWorkouts });
 </script>
 
 <template>
