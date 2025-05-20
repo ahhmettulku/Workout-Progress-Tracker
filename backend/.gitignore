@@ -25,3 +25,6 @@ coverage/
 # Prisma
 prisma/dev.db
 prisma/*.sqlite
+
+#Generated Prisma client
+generated/
