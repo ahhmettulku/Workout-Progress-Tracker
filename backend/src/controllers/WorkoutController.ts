@@ -1,105 +1,3 @@
-// import {
-//   JsonController,
-//   Get,
-//   Post,
-//   Put,
-//   Delete,
-//   Param,
-//   Body,
-//   Res,
-//   HttpCode,
-//   OnUndefined,
-//   QueryParams,
-// } from "routing-controllers";
-// import { Response } from "express";
-// import { WorkoutService } from "../services/WorkoutService";
-// import { Service } from "typedi";
-// import { CreateWorkoutDto } from "../dto/CreateWorkoutDto";
-// import { UpdateWorkoutDto } from "../dto/UpdateWorkoutDto";
-// import { GetWorkoutsQuery } from "../dto/GetWorkoutsQuery";
-
-// @Service()
-// @JsonController("/api/workouts")
-// export class WorkoutController {
-//   constructor(private workoutService: WorkoutService) {}
-
-//   @Get("/")
-//   async getWorkouts(
-//     @QueryParams({ validate: true })
-//     query: GetWorkoutsQuery,
-//     @Res() res: Response,
-//   ) {
-//     try {
-//       const workouts = await this.workoutService.getWorkouts(query);
-//       return res.json(workouts);
-//     } catch (e) {
-//       console.error("Error fetching workouts:", e);
-//       return res.status(500).json({ error: "Failed to fetch workouts" });
-//     }
-//   }
-
-//   @Get("/:id")
-//   @OnUndefined(404)
-//   async getWorkoutById(@Param("id") id: number, @Res() res: Response) {
-//     try {
-//       const workout = await this.workoutService.getWorkoutById(Number(id));
-//       if (!workout) return res.status(404).json({ error: "Workout not found" });
-//       return res.json(workout);
-//     } catch (e) {
-//       console.error(`Error fetching workout with id ${id}:`, e);
-//       return res.status(500).json({ error: "Failed to fetch workout" });
-//     }
-//   }
-
-//   @Post("/")
-//   @HttpCode(201)
-//   async createWorkout(
-//     @Body({ validate: true }) body: CreateWorkoutDto,
-//     @Res() res: Response,
-//   ) {
-//     try {
-//       const workout = await this.workoutService.createWorkout(body);
-//       return res.status(201).json(workout);
-//     } catch (e) {
-//       return res
-//         .status(400)
-//         .json({ error: (e as Error).message || "Failed to create workout" });
-//     }
-//   }
-
-//   @Put("/:id")
-//   async updateWorkout(
-//     @Param("id") id: number,
-//     @Body({ validate: true }) body: UpdateWorkoutDto,
-//     @Res() res: Response,
-//   ) {
-//     try {
-//       const workout = await this.workoutService.updateWorkout(Number(id), body);
-//       return res.json(workout);
-//     } catch (e) {
-//       console.error(`Error updating workout with id ${id}:`, e);
-//       return res
-//         .status(400)
-//         .json({ error: (e as Error).message || "Failed to update workout" });
-//     }
-//   }
-
-//   @Delete("/:id")
-//   @OnUndefined(204)
-//   async deleteWorkout(@Param("id") id: number, @Res() res: Response) {
-//     try {
-//       const deleted = await this.workoutService.deleteWorkout(Number(id));
-//       if (!deleted) {
-//         return res.status(404).json({ error: "Workout not found" });
-//       }
-//       return res.sendStatus(204);
-//     } catch (e) {
-//       console.error(`Error deleting workout with id ${id}:`, e);
-//       return res.status(500).json({ error: "Failed to delete workout" });
-//     }
-//   }
-// }
-
 import {
   JsonController,
   Get,
@@ -133,7 +31,9 @@ export class WorkoutController {
 
   @Get("/:id")
   async getWorkoutById(@Param("id") id: string) {
-    const workout = await this.workoutService.getWorkoutById(parseInt(id));
+    const workoutId = parseInt(id);
+    if (isNaN(workoutId)) throw new BadRequestError("Invalid workout ID");
+    const workout = await this.workoutService.getWorkoutById(workoutId);
     if (!workout) throw new NotFoundError("Workout not found");
     return workout;
   }
