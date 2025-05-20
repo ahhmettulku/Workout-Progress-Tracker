@@ -188,6 +188,8 @@ This project demonstrates several security best practices suitable for MVPs and 
 - User authentication & registration
 - Autherization, Role-based access control (admin/user)
 - Update method can be improved to PATCH for partial updates
+- Frontend state management (Vuex or Pinia)
+- 'Delete' option for the edit form in the frontend
 - Database migration to Postgres or MySQL for production
 - Advanced analytics and charts
 - Persistent database volume for production
