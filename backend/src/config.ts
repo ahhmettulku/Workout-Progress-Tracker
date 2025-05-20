@@ -33,7 +33,6 @@ export function setupApp(app: Application): void {
 
   // Now, after useExpressServer!
   const storage = getMetadataArgsStorage();
-  console.log(storage);
   const spec = routingControllersToSpec(
     storage,
     {},
