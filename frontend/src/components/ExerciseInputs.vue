@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from "vue";
 
+// Define the props for the component: exercises array
 const props = defineProps<{
   exercises: Array<{
     name: string;
@@ -9,6 +10,8 @@ const props = defineProps<{
     weight: number;
   }>;
 }>();
+
+// Define the emit event for updating exercises
 const emit = defineEmits(["update:exercises"]);
 
 const addExercise = () => {
@@ -17,6 +20,8 @@ const addExercise = () => {
     { name: "", reps: 0, sets: 0, weight: 0 },
   ]);
 };
+
+// Update a specific field of a specific exercise
 const updateExercise = (idx: number, field: string, value: any) => {
   const updated = props.exercises.map((exercise, i) =>
     i === idx ? { ...exercise, [field]: value } : exercise,
@@ -27,6 +32,7 @@ const updateExercise = (idx: number, field: string, value: any) => {
 
 <template>
   <div>
+    <!-- Render input fields for each exercise -->
     <div v-for="(exercise, idx) in exercises" :key="idx">
       <input
         v-model="exercise.name"

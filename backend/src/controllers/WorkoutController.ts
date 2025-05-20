@@ -23,12 +23,14 @@ import { OpenAPI } from "routing-controllers-openapi";
 export class WorkoutController {
   constructor(private workoutService: WorkoutService) {}
 
+  // Get all workouts, supports query params for pagination and search
   @Get("/")
   @OpenAPI({ summary: "Get all workouts" })
   async getWorkouts(@QueryParams({ validate: true }) query: GetWorkoutsQuery) {
     return await this.workoutService.getWorkouts(query);
   }
 
+  // Get a single workout by its ID
   @Get("/:id")
   async getWorkoutById(@Param("id") id: string) {
     const workoutId = parseInt(id);
@@ -38,6 +40,7 @@ export class WorkoutController {
     return workout;
   }
 
+  // Create a new workout
   @Post("/")
   @HttpCode(201)
   @OpenAPI({ summary: "Create a new workout" })
@@ -53,6 +56,7 @@ export class WorkoutController {
     }
   }
 
+  // Update an existing workout by its ID
   @Put("/:id")
   @OpenAPI({ summary: "Update a workout" })
   async updateWorkout(
@@ -73,6 +77,7 @@ export class WorkoutController {
     }
   }
 
+  // Delete a workout by its ID
   @Delete("/:id")
   @OnUndefined(204)
   @OpenAPI({ summary: "Delete a workout" })

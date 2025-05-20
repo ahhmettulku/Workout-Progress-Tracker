@@ -5,15 +5,18 @@ import ExerciseInputs from "./ExerciseInputs.vue";
 import type { Workout } from "../models/workout";
 import type { Exercise } from "../models/exercise";
 
+// Props: workout object and a callback to notify parent when changed
 const props = defineProps<{
   workout: Workout;
   onChanged: () => void;
 }>();
 
+// State for edit mode, form date, and exercises
 const editing = ref(false);
 const formDate = ref("");
 const formExercises = ref<any[]>([]);
 
+// Watch for changes in the workout prop to update form fields when editing
 watch(
   () => props.workout,
   (workout) => {
@@ -26,6 +29,7 @@ watch(
   },
 );
 
+// Start editing: populate form fields with current workout data
 const startEdit = () => {
   editing.value = true;
   formDate.value = new Date(props.workout.date).toISOString().slice(0, 16);
@@ -34,11 +38,13 @@ const startEdit = () => {
   }));
 };
 
+// Cancel editing: reset form state
 const cancelEdit = () => {
   editing.value = false;
   formExercises.value = [];
 };
 
+// Save the edited workout to the backend
 const saveEdit = async () => {
   await api.put(`/workouts/${props.workout.id}`, {
     date: new Date(formDate.value).toISOString(),
@@ -51,14 +57,15 @@ const saveEdit = async () => {
   });
   editing.value = false;
   formExercises.value = [];
-  props.onChanged();
+  props.onChanged(); // Notify parent to refresh the list
   alert("Workout updated!");
 };
 
+// Delete the workout after confirmation
 const deleteWorkout = async () => {
   if (!confirm("Are you sure you want to delete this workout?")) return;
   await api.delete(`/workouts/${props.workout.id}`);
-  props.onChanged();
+  props.onChanged(); // Notify parent to refresh the list
 };
 </script>
 
