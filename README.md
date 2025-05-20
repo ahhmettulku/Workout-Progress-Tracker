@@ -134,14 +134,24 @@ docker-compose up --build
 
 ### Local Development (without Docker):
 
+After cloning the repo, create a `.env` file in the `backend` directory to set up environment variables, especially for the database connection string.
+
+Example connection string for SQLite:
+
+```sh
+DATABASE_URL="file:./dev.db"
+```
+
 Backend:
 
 ```sh
 cd backend
-npm install
+npm install --legacy-peer-deps
 npx prisma migrate dev
 npm run dev
 ```
+
+> Note: `--legacy-peer-deps` is required for OpenAPI and class validators compatibility.
 
 Backend API runs at: http://localhost:4000
 
